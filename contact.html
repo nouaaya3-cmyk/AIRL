@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nous Contacter – AIRL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+    :root {
+  --ink: #1f4e79;         /* bleu principal (remplace noir) */
+  --cream: #4a79c1;       /* fond clair doux */
+  
+  --gold: #9773de;        /* vert (couleur principale action) */
+  --gold-light: #7a5fa3;  /* violet (accent moderne) */
+
+  --sage: #2e6f95;        /* bleu secondaire */
+  --rust: #5a4b8a;        /* violet foncé (hover / profondeur) */
+  
+  --accent: #4aa3df;      /* bleu clair (liens / interaction) */
+}
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1.2rem 4rem; background:rgba(247,243,238,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(184,147,58,0.2); }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:var(--ink); text-decoration:none; }
+  .nav-brand span { color:var(--gold); }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a { text-decoration:none; color:var(--ink); font-size:0.82rem; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; opacity:0.7; transition:opacity 0.2s,color 0.2s; }
+  .nav-links a:hover,.nav-links a.active { opacity:1; color:var(--gold); }
+
+  /* HERO CONTACT */
+  .contact-hero {
+    min-height:100vh; display:grid; grid-template-columns:1fr 1fr;
+    padding-top:72px;
+  }
+
+  .contact-left {
+    background:var(--ink); padding:7rem 5rem;
+    display:flex; flex-direction:column; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .contact-left::before {
+    content:''; position:absolute; bottom:-100px; left:-100px;
+    width:400px; height:400px; border-radius:50%;
+    border:1px solid rgba(184,147,58,0.1);
+  }
+  .contact-left::after {
+    content:''; position:absolute; top:-50px; right:-50px;
+    width:250px; height:250px; border-radius:50%;
+    border:1px solid rgba(184,147,58,0.08);
+  }
+  .left-content { position:relative; z-index:2; }
+  .left-eyebrow { font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1.5rem; }
+  .left-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,4vw,3.8rem); font-weight:300; color:rgb(132, 138, 233); line-height:1.2; margin-bottom:2rem; }
+  .left-title em { font-style:italic; color:var(--gold-light); }
+  .left-desc { font-size:0.92rem; line-height:1.9; color:rgba(4, 0, 7, 0.65); margin-bottom:3rem; max-width:380px; }
+
+  .contact-info-items { display:flex; flex-direction:column; gap:2rem; }
+  .contact-info-item { display:flex; align-items:flex-start; gap:1.2rem; }
+  .contact-info-icon { width:44px; height:44px; border:1px solid rgba(184,147,58,0.3); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+  .contact-info-label { font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:0.3rem; }
+  .contact-info-value { font-size:0.88rem; color:rgba(106, 136, 237, 0.75); line-height:1.6; }
+
+  /* FORM */
+  .contact-right { padding:7rem 5rem; display:flex; flex-direction:column; justify-content:center; }
+  .form-eyebrow { font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1.5rem; }
+  .form-title { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; margin-bottom:2.5rem; }
+
+  .form-group { margin-bottom:1.8rem; }
+  .form-label { display:block; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(15,26,46,0.55); margin-bottom:0.6rem; font-weight:500; }
+  .form-input, .form-select, .form-textarea {
+    width:100%; padding:1rem 1.2rem;
+    border:1.5px solid rgba(15,26,46,0.12);
+    background:rgb(255, 255, 255); font-family:'DM Sans',sans-serif;
+    font-size:0.9rem; color:var(--ink); outline:none;
+    transition:border-color 0.25s;
+    appearance:none;
+  }
+  .form-input:focus,.form-select:focus,.form-textarea:focus { border-color:var(--gold); }
+  .form-textarea { resize:vertical; min-height:140px; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+
+  .form-submit {
+    display:inline-flex; align-items:center; gap:0.8rem;
+    padding:1.1rem 3rem; background:var(--ink); color:rgb(187, 178, 215);
+    border:none; cursor:pointer; font-family:'DM Sans',sans-serif;
+    font-size:0.82rem; letter-spacing:0.12em; text-transform:uppercase;
+    font-weight:500; transition:background 0.3s, transform 0.2s;
+    margin-top:0.5rem;
+  }
+  .form-submit:hover { background:var(--gold); transform:translateY(-2px); }
+  .form-note { font-size:0.75rem; color:rgba(15,26,46,0.4); margin-top:1rem; }
+
+  /* SUCCESS */
+  .form-success { display:none; text-align:center; padding:3rem; background:rgba(90,122,110,0.08); border:1px solid rgba(90,122,110,0.2); }
+  .form-success.show { display:block; }
+  .form-success h3 { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:300; margin-bottom:0.8rem; color:var(--sage); }
+  .form-success p { font-size:0.88rem; color:rgba(15,26,46,0.65); }
+
+  /* MAP PLACEHOLDER */
+  .map-section { background:var(--ink); padding:5rem; }
+  .map-inner { background:rgba(247,243,238,0.04); border:1px solid rgba(184,147,58,0.15); height:300px; display:flex; align-items:center; justify-content:center; }
+  .map-placeholder { text-align:center; }
+  .map-placeholder-icon { font-size:3rem; margin-bottom:1rem; }
+  .map-placeholder-text { color:rgba(247,243,238,0.4); font-size:0.88rem; letter-spacing:0.05em; }
+
+  /* MEMBERSHIP CTA */
+  .membership-section { padding:5rem; background:rgb(104, 81, 174); display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; border-top:1px solid rgba(15,26,46,0.06); }
+  .membership-title { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; margin-bottom:1.5rem; line-height:1.3; }
+  .membership-title em { font-style:italic; color:var(--gold); }
+  .membership-text { font-size:0.9rem; line-height:1.8; color:rgba(15,26,46,0.65); }
+  .membership-types { display:flex; flex-direction:column; gap:1.2rem; }
+  .membership-card { padding:1.5rem 2rem; border-left:3px solid; }
+  .membership-card:nth-child(1) { border-color:var(--gold); background:rgba(184,147,58,0.05); }
+  .membership-card:nth-child(2) { border-color:var(--sage); background:rgba(90,122,110,0.05); }
+  .membership-card:nth-child(3) { border-color:var(--ink); background:rgba(15,26,46,0.03); }
+  .membership-card-title { font-weight:500; font-size:0.9rem; margin-bottom:0.3rem; }
+  .membership-card-desc { font-size:0.8rem; color:rgba(15,26,46,0.55); }
+
+  footer { background:var(--ink); padding:3rem 5rem; display:flex; justify-content:space-between; align-items:center; }
+  .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:rgb(213, 84, 181); }
+  .footer-brand span { color:var(--gold); }
+  .footer-nav { display:flex; gap:2rem; list-style:none; }
+  .footer-nav a { text-decoration:none; color:rgba(247,243,238,0.5); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.2s; }
+  .footer-nav a:hover { color:var(--gold); }
+  .footer-copy { font-size:0.74rem; color:rgba(247,243,238,0.35); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+  <img src="logo.jpeg" alt="AIRL" style="height:45px; width:auto;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="qui-sommes-nous.html">À Propos</a></li>
+    <li><a href="membres.html">Membres</a></li>
+    <li><a href="axes-recherche.html">Recherches</a></li>
+    <li><a href="activites.html">Activités</a></li>
+    <li><a href="partenaires.html">Partenaires</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+    <li><a href="agenda.html">Agenda</a></li>
+  </ul>
+</nav>
+
+<section class="contact-hero">
+  <!-- LEFT INFO -->
+  <div class="contact-left">
+    <div class="left-content">
+      <p class="left-eyebrow">Interface 07 · Contact</p>
+      <h1 class="left-title">Nous <em>Contacter</em></h1>
+      <p class="left-desc">
+        Vous souhaitez rejoindre l'association, proposer une collaboration scientifique ou obtenir des informations sur nos activités ? N'hésitez pas à nous écrire.
+      </p>
+
+      <div class="contact-info-items">
+        <div class="contact-info-item">
+          <div class="contact-info-icon"></div>
+          <div>
+            <p class="contact-info-label">Email général</p>
+            <p class="contact-info-value">contact@airl-recherches.org</p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon"></div>
+          <div>
+            <p class="contact-info-label">Siège de l'association</p>
+            <p class="contact-info-value">ENS – Université Abdelmalek Essaâdi<br>Tétouan, Maroc</p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon"></div>
+          <div>
+            <p class="contact-info-label">Réseaux scientifiques</p>
+            <p class="contact-info-value">ResearchGate · Academia.edu<br>Google Scholar (AIRL)</p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon"></div>
+          <div>
+            <p class="contact-info-label">Secrétariat</p>
+            <p class="contact-info-value">Disponible sur demande<br>via le formulaire de contact</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM -->
+  <div class="contact-right">
+    <p class="form-eyebrow">Envoyez-nous un message</p>
+    <h2 class="form-title">Formulaire de contact</h2>
+
+    <form id="contactForm" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="prenom">Prénom</label>
+          <input type="text" id="prenom" class="form-input" placeholder="Votre prénom" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="nom">Nom</label>
+          <input type="text" id="nom" class="form-input" placeholder="Votre nom" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input type="email" id="email" class="form-input" placeholder="votre@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="institution">Institution / Université</label>
+        <input type="text" id="institution" class="form-input" placeholder="Votre établissement">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="sujet">Objet de la demande</label>
+        <select id="sujet" class="form-select" required>
+          <option value="">— Sélectionnez un sujet —</option>
+          <option>Adhésion à l'association</option>
+          <option>Proposition de collaboration scientifique</option>
+          <option>Soumission d'article / publication</option>
+          <option>Organisation d'un événement</option>
+          <option>Partenariat institutionnel</option>
+          <option>Information générale</option>
+          <option>Autre</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message">Message</label>
+        <textarea id="message" class="form-textarea" placeholder="Décrivez votre demande..." required></textarea>
+      </div>
+
+      <button type="submit" class="form-submit">Envoyer le message →</button>
+      <p class="form-note">Nous vous répondrons dans un délai de 48 heures ouvrables.</p>
+    </form>
+
+    <div class="form-success" id="formSuccess">
+      <h3>Message envoyé !</h3>
+      <p>Merci pour votre message. Nous vous contacterons dans les meilleurs délais.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="membership-section">
+  <div>
+    <h2 class="membership-title">Rejoindre <em>l'AIRL</em></h2>
+    <p class="membership-text">L'AIRL accueille des chercheurs, enseignants-chercheurs, doctorants et formateurs intéressés par les recherches en littéracies, éducation, formation et inclusion. L'adhésion ouvre l'accès à notre réseau international, à nos publications et à nos événements scientifiques.</p>
+  </div>
+  <div class="membership-types">
+    <div class="membership-card">
+      <p class="membership-card-title">Membre chercheur / enseignant-chercheur</p>
+      <p class="membership-card-desc">Titulaires d'un doctorat, impliqués dans des activités de recherche</p>
+    </div>
+    <div class="membership-card">
+      <p class="membership-card-title">Membre doctorant</p>
+      <p class="membership-card-desc">Étudiants en thèse dans les domaines couverts par l'AIRL</p>
+    </div>
+    <div class="membership-card">
+      <p class="membership-card-title">Membre institutionnel</p>
+      <p class="membership-card-desc">Laboratoires, universités et centres de recherche partenaires</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">AIR<span>L</span></div>
+  <ul class="footer-nav">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="membres.html">Membres</a></li>
+    <li><a href="activites.html">Activités</a></li>
+    <li><a href="agenda.html">Agenda</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 AIRL</p>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').classList.add('show');
+  }
+</script>
+</body>
+</html>

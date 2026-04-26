@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axes de Recherche – AIRL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+  --ink: #1f4e79;         /* bleu principal (remplace noir) */
+  --cream: #f5f7fa;       /* fond clair doux */
+  
+  --gold: #9773de;        /* vert (couleur principale action) */
+  --gold-light: #7a5fa3;  /* violet (accent moderne) */
+
+  --sage: #2e6f95;        /* bleu secondaire */
+  --rust: #5a4b8a;        /* violet foncé (hover / profondeur) */
+  
+  --accent: #4aa3df;      /* bleu clair (liens / interaction) */
+}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1.2rem 4rem; background:rgba(247,243,238,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(184,147,58,0.2); }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:var(--ink); text-decoration:none; }
+  .nav-brand span { color:var(--gold); }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a { text-decoration:none; color:var(--ink); font-size:0.82rem; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; opacity:0.7; transition:opacity 0.2s,color 0.2s; }
+  .nav-links a:hover,.nav-links a.active { opacity:1; color:var(--gold); }
+
+  /* ── PAGE HEADER ── */
+  .page-header { padding:10rem 5rem 5rem; background:linear-gradient(135deg,#1a2a1a,#0f1a2e); position:relative; overflow:hidden; }
+  .grid-overlay { position:absolute; inset:0; background-image:linear-gradient(rgba(90,122,110,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(90,122,110,0.07) 1px,transparent 1px); background-size:80px 80px; }
+  .page-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:80px; background:var(--cream); clip-path:polygon(0 100%,100% 100%,100% 0); }
+  .page-header-content { position:relative; z-index:2; animation:fadeUp 0.8s 0.2s both; }
+  .page-eyebrow { font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--sage); margin-bottom:1.2rem; opacity:0.8; }
+  .page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:white; line-height:1.1; }
+  .page-title em { color:var(--gold-light); font-style:italic; }
+
+  /* ── INTRO ── */
+  .intro { padding:5rem; max-width:800px; }
+  .intro p { font-size:1.05rem; line-height:1.9; color:rgba(15,26,46,0.7); }
+
+  /* ── AXES ── */
+  .axes-section { padding:0 5rem 6rem; }
+
+  .axe-block {
+    display:grid; grid-template-columns:auto 1fr;
+    gap:0; margin-bottom:2px;
+    cursor:pointer;
+    transition:transform 0.2s;
+  }
+  .axe-block:hover { transform:translateX(4px); }
+
+  .axe-number {
+    width:120px; min-height:200px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Cormorant Garamond',serif; font-size:5rem;
+    font-weight:700; color:white;
+    writing-mode:vertical-rl; text-orientation:mixed;
+    position:relative; overflow:hidden;
+  }
+
+  .axe-block:nth-child(1) .axe-number { background:#0f2a1f; }
+  .axe-block:nth-child(2) .axe-number { background:#1a1a2e; }
+  .axe-block:nth-child(3) .axe-number { background:#2a1a0f; }
+  .axe-block:nth-child(4) .axe-number { background:#1a0f2a; }
+  .axe-block:nth-child(5) .axe-number { background:#0f1a2a; }
+
+  .axe-content {
+    background:white; padding:3rem 3rem 3rem 4rem;
+    border-bottom:2px solid transparent;
+    transition:border-color 0.3s, background 0.3s;
+  }
+  .axe-block:hover .axe-content { border-color:var(--gold); background:#fefcf9; }
+
+  .axe-tag {
+    display:inline-block; padding:0.25rem 0.8rem;
+    font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase;
+    margin-bottom:1rem; font-weight:500;
+  }
+  .axe-block:nth-child(1) .axe-tag { background:#e8f4ee; color:#2d6a4f; }
+  .axe-block:nth-child(2) .axe-tag { background:#e8e8f4; color:#2d2d6a; }
+  .axe-block:nth-child(3) .axe-tag { background:#f4ede8; color:#6a3d2d; }
+  .axe-block:nth-child(4) .axe-tag { background:#f0e8f4; color:#5d2d6a; }
+  .axe-block:nth-child(5) .axe-tag { background:#e8eef4; color:#2d456a; }
+
+  .axe-title { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:600; margin-bottom:1.2rem; line-height:1.3; }
+  .axe-desc { font-size:0.9rem; line-height:1.9; color:rgba(15,26,46,0.65); max-width:700px; margin-bottom:2rem; }
+
+  .axe-keywords { display:flex; flex-wrap:wrap; gap:0.5rem; }
+  .keyword {
+    padding:0.3rem 0.9rem; border:1px solid rgba(15,26,46,0.15);
+    font-size:0.75rem; color:rgba(15,26,46,0.6); letter-spacing:0.05em;
+    transition:border-color 0.2s, color 0.2s;
+  }
+  .axe-block:hover .keyword { border-color:var(--gold); color:var(--ink); }
+
+  /* ── PROGRAMME ── */
+  .prog-section { background:var(--ink); padding:6rem 5rem; }
+  .prog-header { margin-bottom:4rem; }
+  .prog-eyebrow { font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+  .prog-title { font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:300; color:white; }
+
+  .prog-themes { display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:rgba(184,147,58,0.1); }
+  .prog-theme {
+    background:var(--ink); padding:2.5rem 2rem;
+    border-top:2px solid transparent; transition:border-color 0.3s, background 0.3s;
+    cursor:default;
+  }
+  .prog-theme:hover { border-color:var(--gold); background:rgba(247,243,238,0.03); }
+  .prog-theme-num { font-family:'Cormorant Garamond',serif; font-size:2rem; color:rgba(184,147,58,0.25); margin-bottom:1rem; }
+  .prog-theme-text { font-size:0.84rem; line-height:1.7; color:rgba(247,243,238,0.65); }
+
+  /* ── FOOTER ── */
+  footer { background:var(--ink); padding:3rem 5rem; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(247,243,238,0.06); }
+  .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:white; }
+  .footer-brand span { color:var(--gold); }
+  .footer-nav { display:flex; gap:2rem; list-style:none; }
+  .footer-nav a { text-decoration:none; color:rgba(247,243,238,0.5); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.2s; }
+  .footer-nav a:hover { color:var(--gold); }
+  .footer-copy { font-size:0.74rem; color:rgba(247,243,238,0.35); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+  <img src="logo.jpeg" alt="AIRL" style="height:45px; width:auto;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="qui-sommes-nous.html">À Propos</a></li>
+    <li><a href="membres.html">Membres</a></li>
+    <li><a href="axes-recherche.html" class="active">Recherches</a></li>
+    <li><a href="activites.html">Activités</a></li>
+    <li><a href="partenaires.html">Partenaires</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="agenda.html">Agenda</a></li>
+  </ul>
+</nav>
+
+<section class="page-header">
+  <div class="grid-overlay"></div>
+  <div class="page-header-content">
+    <p class="page-eyebrow">Interface 04 · Programme scientifique</p>
+    <h1 class="page-title">Axes de <em>Recherche</em></h1>
+  </div>
+</section>
+
+<section class="intro">
+  <p>L'AIRL adopte une approche pluridisciplinaire et a pour objectif d'étudier, de décrire et d'analyser les problématiques liées à l'enseignement préscolaire, scolaire, secondaire et supérieur, à la formation technique, professionnalisante, professionnelle et continue, ainsi qu'aux autres modes « non formels » d'accès aux pratiques culturelles et sociales.</p>
+</section>
+
+<section class="axes-section">
+
+  <div class="axe-block">
+    <div class="axe-number">01</div>
+    <div class="axe-content">
+      <span class="axe-tag">Axe 1</span>
+      <h2 class="axe-title">Formation, pratiques, évaluation, accompagnement, spécialités enseignantes et éducatives</h2>
+      <p class="axe-desc">Cet axe s'intéresse aux pratiques d'enseignement et de formation dans leur diversité, aux dispositifs d'évaluation et d'accompagnement des apprenants, ainsi qu'aux spécialités disciplinaires en jeu dans la transmission des savoirs. Il interroge les outils, méthodes et ressources mobilisés dans la construction des compétences professionnelles des enseignants et des formateurs, à tous les niveaux du système éducatif.</p>
+      <div class="axe-keywords">
+        <span class="keyword">Pratiques enseignantes</span>
+        <span class="keyword">Évaluation formative</span>
+        <span class="keyword">Accompagnement pédagogique</span>
+        <span class="keyword">Formation des formateurs</span>
+        <span class="keyword">Compétences professionnelles</span>
+        <span class="keyword">Didactiques disciplinaires</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="axe-block">
+    <div class="axe-number">02</div>
+    <div class="axe-content">
+      <span class="axe-tag">Axe 2</span>
+      <h2 class="axe-title">Innovations pédagogiques, évolutions curriculaires et insertion professionnelle</h2>
+      <p class="axe-desc">Cet axe explore les mutations des curricula et les innovations pédagogiques qui transforment les pratiques d'enseignement et d'apprentissage. Il s'intéresse également aux liens entre les formations académiques et l'insertion professionnelle, en questionnant les modalités de transition entre les sphères éducative et professionnelle, notamment à l'ère du numérique.</p>
+      <div class="axe-keywords">
+        <span class="keyword">Innovation curriculaire</span>
+        <span class="keyword">Réforme pédagogique</span>
+        <span class="keyword">Insertion professionnelle</span>
+        <span class="keyword">Transition école-travail</span>
+        <span class="keyword">Compétences transférables</span>
+        <span class="keyword">Pédagogie active</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="axe-block">
+    <div class="axe-number">03</div>
+    <div class="axe-content">
+      <span class="axe-tag">Axe 3</span>
+      <h2 class="axe-title">Publics préscolaire, scolaire, académique, professionnel, socialisation et accompagnement</h2>
+      <p class="axe-desc">Centré sur les différents publics apprenants, cet axe analyse les processus de socialisation et les formes d'accompagnement adaptées à chaque étape du parcours éducatif. Il couvre les enfants du préscolaire aux adultes en formation professionnelle, en s'intéressant aux besoins spécifiques de chaque groupe et aux conditions favorisant leur réussite.</p>
+      <div class="axe-keywords">
+        <span class="keyword">Publics scolaires</span>
+        <span class="keyword">Socialisation</span>
+        <span class="keyword">Besoins éducatifs</span>
+        <span class="keyword">Apprentissage tout au long de la vie</span>
+        <span class="keyword">Parcours éducatifs</span>
+        <span class="keyword">Orientation scolaire</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="axe-block">
+    <div class="axe-number">04</div>
+    <div class="axe-content">
+      <span class="axe-tag">Axe 4</span>
+      <h2 class="axe-title">Enseignement, formation et apprentissage avec et par le numérique</h2>
+      <p class="axe-desc">Cet axe interroge les usages du numérique dans les contextes éducatifs formels et non formels. Il explore comment les technologies transforment les pratiques d'enseignement et d'apprentissage, mais aussi les nouvelles littéracies numériques que les apprenants doivent développer pour évoluer dans une société de plus en plus numérisée.</p>
+      <div class="axe-keywords">
+        <span class="keyword">Littéracies numériques</span>
+        <span class="keyword">Technologies éducatives</span>
+        <span class="keyword">Apprentissage en ligne</span>
+        <span class="keyword">Classes inversées</span>
+        <span class="keyword">Intelligence artificielle en éducation</span>
+        <span class="keyword">Environnements numériques</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="axe-block">
+    <div class="axe-number">05</div>
+    <div class="axe-content">
+      <span class="axe-tag">Axe 5</span>
+      <h2 class="axe-title">Inclusion, handicap, (an)alphabétisation et apprentissages</h2>
+      <p class="axe-desc">Cet axe porte sur les enjeux d'inclusion scolaire et sociale, en particulier pour les personnes en situation de handicap, les apprenants en situation d'analphabétisme ou d'illettrisme. Il vise à développer des pratiques et dispositifs qui permettent à chacun d'accéder à l'éducation, à la formation et à la participation sociale, dans le respect des orientations nationales et internationales.</p>
+      <div class="axe-keywords">
+        <span class="keyword">Inclusion scolaire</span>
+        <span class="keyword">Handicap</span>
+        <span class="keyword">Alphabétisation</span>
+        <span class="keyword">Illettrisme</span>
+        <span class="keyword">Accessibilité</span>
+        <span class="keyword">Différenciation pédagogique</span>
+        <span class="keyword">Éducation pour tous</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- PROGRAMME -->
+<section class="prog-section">
+  <div class="prog-header">
+    <p class="prog-eyebrow">Programme scientifique structuré</p>
+    <h2 class="prog-title">Cinq thématiques prioritaires</h2>
+  </div>
+  <div class="prog-themes">
+    <div class="prog-theme">
+      <div class="prog-theme-num">T1</div>
+      <p class="prog-theme-text">Formation, pratiques, évaluation, accompagnement, spécialités enseignantes et éducatives</p>
+    </div>
+    <div class="prog-theme">
+      <div class="prog-theme-num">T2</div>
+      <p class="prog-theme-text">Innovations pédagogiques, évolutions curriculaires et insertion professionnelle</p>
+    </div>
+    <div class="prog-theme">
+      <div class="prog-theme-num">T3</div>
+      <p class="prog-theme-text">Publics préscolaire, scolaire, académique, professionnel, socialisation et accompagnement</p>
+    </div>
+    <div class="prog-theme">
+      <div class="prog-theme-num">T4</div>
+      <p class="prog-theme-text">Enseignement, formation et apprentissage avec et par le numérique</p>
+    </div>
+    <div class="prog-theme">
+      <div class="prog-theme-num">T5</div>
+      <p class="prog-theme-text">Inclusion, handicap, (an)alphabétisation et apprentissages</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">AIR<span>L</span></div>
+  <ul class="footer-nav">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="membres.html">Membres</a></li>
+    <li><a href="activites.html">Activités</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 AIRL</p>
+</footer>
+
+</body>
+</html>

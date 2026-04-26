@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda – AIRL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#0f1a2e; --cream:#f7f3ee; --gold:#b8933a; --gold-light:#d4ae62; --sage:#5a7a6e; --rust:#8b3a2a; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1.2rem 4rem; background:rgba(247,243,238,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(184,147,58,0.2); }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:var(--ink); text-decoration:none; }
+  .nav-brand span { color:var(--gold); }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a { text-decoration:none; color:var(--ink); font-size:0.82rem; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; opacity:0.7; transition:opacity 0.2s,color 0.2s; }
+  .nav-links a:hover,.nav-links a.active { opacity:1; color:var(--gold); }
+
+  /* ── HEADER ── */
+  .page-header { padding:10rem 5rem 4rem; background:linear-gradient(135deg,#0f1a2e,#1a0f2e); position:relative; overflow:hidden; }
+  .page-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:80px; background:var(--cream); clip-path:polygon(0 100%,100% 100%,100% 0); }
+  .page-header-content { position:relative; z-index:2; animation:fadeUp 0.8s 0.2s both; }
+  .page-eyebrow { font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1.2rem; }
+  .page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:white; line-height:1.1; }
+  .page-title em { font-style:italic; color:var(--gold-light); }
+
+  /* ── CALENDAR ── */
+  .calendar-section { padding:5rem; }
+  .cal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:3rem; }
+  .cal-nav { display:flex; align-items:center; gap:2rem; }
+  .cal-month { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; }
+  .cal-nav-btn { width:40px; height:40px; border:1.5px solid rgba(15,26,46,0.15); background:none; cursor:pointer; font-size:1rem; color:var(--ink); transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
+  .cal-nav-btn:hover { border-color:var(--gold); color:var(--gold); }
+  .cal-view-btns { display:flex; gap:0.5rem; }
+  .view-btn { padding:0.5rem 1.2rem; border:1.5px solid rgba(15,26,46,0.15); background:transparent; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(15,26,46,0.5); transition:all 0.2s; }
+  .view-btn.active { border-color:var(--ink); color:var(--ink); background:white; }
+
+  /* ── CALENDAR GRID ── */
+  .cal-grid { background:white; border:1px solid rgba(15,26,46,0.08); }
+  .cal-weekdays { display:grid; grid-template-columns:repeat(7,1fr); background:var(--ink); }
+  .cal-weekday { padding:0.8rem; text-align:center; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(247,243,238,0.6); }
+  .cal-days { display:grid; grid-template-columns:repeat(7,1fr); }
+  .cal-day {
+    min-height:120px; padding:0.8rem; border-right:1px solid rgba(15,26,46,0.06);
+    border-bottom:1px solid rgba(15,26,46,0.06); position:relative;
+    transition:background 0.2s; cursor:default;
+  }
+  .cal-day:hover { background:rgba(184,147,58,0.03); }
+  .cal-day.other-month { background:rgba(15,26,46,0.015); }
+  .cal-day.today { background:rgba(184,147,58,0.06); }
+  .cal-day-num { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:300; color:rgba(15,26,46,0.4); margin-bottom:0.4rem; }
+  .cal-day.today .cal-day-num { color:var(--gold); font-weight:600; }
+  .cal-day.other-month .cal-day-num { color:rgba(15,26,46,0.2); }
+
+  .cal-event { padding:0.25rem 0.5rem; margin-bottom:0.3rem; font-size:0.68rem; line-height:1.4; cursor:pointer; transition:opacity 0.2s; border-radius:1px; }
+  .cal-event:hover { opacity:0.85; }
+  .cal-event.colloque { background:#2d2d6a; color:white; }
+  .cal-event.seminar { background:#6a2d2d; color:white; }
+  .cal-event.workshop { background:#2d6a4f; color:white; }
+  .cal-event.deadline { background:#b8933a; color:white; }
+
+  /* ── LIST VIEW ── */
+  .list-view { display:none; }
+  .list-view.active { display:block; }
+  .cal-grid-view { display:block; }
+  .cal-grid-view.hidden { display:none; }
+
+  .list-section { margin-bottom:3rem; }
+  .list-month-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:300; padding:1.2rem 2rem; background:var(--ink); color:white; margin-bottom:2px; }
+
+  .list-item {
+    display:grid; grid-template-columns:100px 1fr auto;
+    align-items:center; gap:2rem;
+    padding:1.5rem 2rem; background:white; margin-bottom:2px;
+    transition:background 0.2s; cursor:default;
+  }
+  .list-item:hover { background:#fefcf9; }
+
+  .list-date { text-align:center; }
+  .list-date-day { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; color:var(--gold); line-height:1; }
+  .list-date-mon { font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(15,26,46,0.4); }
+
+  .list-info {}
+  .list-cat { display:inline-block; padding:0.2rem 0.6rem; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.4rem; font-weight:500; }
+  .list-cat.colloque { background:#e8e8f4; color:#2d2d6a; }
+  .list-cat.seminar { background:#f4e8e8; color:#6a2d2d; }
+  .list-cat.workshop { background:#e8f4ee; color:#2d6a4f; }
+  .list-cat.deadline { background:#f4ede8; color:#8b3a2a; }
+  .list-title { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; margin-bottom:0.2rem; }
+  .list-loc { font-size:0.78rem; color:rgba(15,26,46,0.5); }
+
+  .list-action { }
+  .btn-sm { display:inline-block; padding:0.5rem 1.2rem; border:1.5px solid rgba(15,26,46,0.15); font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; text-decoration:none; color:var(--ink); transition:all 0.2s; cursor:pointer; background:none; font-family:'DM Sans',sans-serif; }
+  .btn-sm:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* SIDEBAR */
+  .agenda-layout { display:grid; grid-template-columns:1fr 320px; gap:4rem; padding:5rem; align-items:start; }
+  .sidebar {}
+  .sidebar-card { background:white; padding:2rem; margin-bottom:1.5rem; border-top:2px solid var(--gold); }
+  .sidebar-title { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600; margin-bottom:1.2rem; }
+  .legend-item { display:flex; align-items:center; gap:0.8rem; padding:0.5rem 0; font-size:0.82rem; }
+  .legend-dot { width:12px; height:12px; border-radius:1px; flex-shrink:0; }
+  .legend-dot.colloque { background:#2d2d6a; }
+  .legend-dot.seminar { background:#6a2d2d; }
+  .legend-dot.workshop { background:#2d6a4f; }
+  .legend-dot.deadline { background:#b8933a; }
+
+  .upcoming-list {}
+  .upcoming-item { padding:1rem 0; border-bottom:1px solid rgba(15,26,46,0.07); }
+  .upcoming-item:last-child { border-bottom:none; }
+  .upcoming-date { font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin-bottom:0.3rem; }
+  .upcoming-name { font-size:0.85rem; line-height:1.5; color:var(--ink); }
+
+  /* ── FOOTER ── */
+  footer { background:var(--ink); padding:3rem 5rem; display:flex; justify-content:space-between; align-items:center; }
+  .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:white; }
+  .footer-brand span { color:var(--gold); }
+  .footer-nav { display:flex; gap:2rem; list-style:none; }
+  .footer-nav a { text-decoration:none; color:rgba(247,243,238,0.5); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.2s; }
+  .footer-nav a:hover { color:var(--gold); }
+  .footer-copy { font-size:0.74rem; color:rgba(247,243,238,0.35); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+  <img src="logo.jpeg" alt="AIRL" style="height:45px; width:auto;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="qui-sommes-nous.html">À Propos</a></li>
+    <li><a href="membres.html">Membres</a></li>
+    <li><a href="axes-recherche.html">Recherches</a></li>
+    <li><a href="activites.html">Activités</a></li>
+    <li><a href="partenaires.html">Partenaires</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="agenda.html" class="active">Agenda</a></li>
+  </ul>
+</nav>
+
+<section class="page-header">
+  <div class="page-header-content">
+    <p class="page-eyebrow">Interface 08 · Calendrier</p>
+    <h1 class="page-title"><em>Agenda</em> scientifique</h1>
+  </div>
+</section>
+
+<div class="agenda-layout">
+  <!-- MAIN CALENDAR -->
+  <div>
+    <div class="cal-header">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="prevMonth()">‹</button>
+        <h2 class="cal-month" id="calMonthLabel">Novembre 2025</h2>
+        <button class="cal-nav-btn" onclick="nextMonth()">›</button>
+      </div>
+      <div class="cal-view-btns">
+        <button class="view-btn active" onclick="setView('grid', this)">Calendrier</button>
+        <button class="view-btn" onclick="setView('list', this)">Liste</button>
+      </div>
+    </div>
+
+    <!-- GRID VIEW -->
+    <div class="cal-grid cal-grid-view" id="calGrid">
+      <div class="cal-weekdays">
+        <div class="cal-weekday">Lun</div><div class="cal-weekday">Mar</div>
+        <div class="cal-weekday">Mer</div><div class="cal-weekday">Jeu</div>
+        <div class="cal-weekday">Ven</div><div class="cal-weekday">Sam</div>
+        <div class="cal-weekday">Dim</div>
+      </div>
+      <div class="cal-days" id="calDays"></div>
+    </div>
+
+    <!-- LIST VIEW -->
+    <div class="list-view" id="listView">
+      <div class="list-section">
+        <div class="list-month-title">Novembre 2025</div>
+        <div class="list-item">
+          <div class="list-date"><div class="list-date-day">15</div><div class="list-date-mon">Nov.</div></div>
+          <div class="list-info">
+            <span class="list-cat colloque">Colloque International</span>
+            <p class="list-title">Littéracies à l'ère du numérique</p>
+            <p class="list-loc">📍 Université Abdelmalek Essaâdi, Tétouan</p>
+          </div>
+          <button class="btn-sm">Détails →</button>
+        </div>
+        <div class="list-item">
+          <div class="list-date"><div class="list-date-day">30</div><div class="list-date-mon">Nov.</div></div>
+          <div class="list-info">
+            <span class="list-cat deadline">Date limite</span>
+            <p class="list-title">Soumission des résumés – Colloque Kénitra 2026</p>
+            <p class="list-loc">📩 Soumission en ligne</p>
+          </div>
+          <button class="btn-sm">Soumettre →</button>
+        </div>
+      </div>
+
+      <div class="list-section">
+        <div class="list-month-title">Janvier 2026</div>
+        <div class="list-item">
+          <div class="list-date"><div class="list-date-day">22</div><div class="list-date-mon">Janv.</div></div>
+          <div class="list-info">
+            <span class="list-cat seminar">Séminaire</span>
+            <p class="list-title">Inclusion scolaire et besoins éducatifs particuliers</p>
+            <p class="list-loc">📍 Université de Lille, France (et en ligne)</p>
+          </div>
+          <button class="btn-sm">S'inscrire →</button>
+        </div>
+      </div>
+
+      <div class="list-section">
+        <div class="list-month-title">Mars 2026</div>
+        <div class="list-item">
+          <div class="list-date"><div class="list-date-day">08</div><div class="list-date-mon">Mars</div></div>
+          <div class="list-info">
+            <span class="list-cat workshop">Atelier</span>
+            <p class="list-title">Méthodologies de recherche en littéracies</p>
+            <p class="list-loc">📍 Université Libre de Bruxelles</p>
+          </div>
+          <button class="btn-sm">S'inscrire →</button>
+        </div>
+        <div class="list-item">
+          <div class="list-date"><div class="list-date-day">31</div><div class="list-date-mon">Mars</div></div>
+          <div class="list-info">
+            <span class="list-cat deadline">Date limite</span>
+            <p class="list-title">Soumission des articles complets – Revue AIRL Vol.2</p>
+            <p class="list-loc">📩 Soumission en ligne</p>
+          </div>
+          <button class="btn-sm">Soumettre →</button>
+        </div>
+      </div>
+
+      <div class="list-section">
+        <div class="list-month-title">Juin 2026</div>
+        <div class="list-item">
+          <div class="list-date"><div class="list-date-day">14</div><div class="list-date-mon">Juin</div></div>
+          <div class="list-info">
+            <span class="list-cat colloque">Conférence Internationale</span>
+            <p class="list-title">Formation, professionnalisation et littéracies</p>
+            <p class="list-loc">📍 Université Ibn Tofail, Kénitra, Maroc</p>
+          </div>
+          <button class="btn-sm">Détails →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <h3 class="sidebar-title">Légende</h3>
+      <div class="legend-item"><div class="legend-dot colloque"></div> Colloque / Conférence</div>
+      <div class="legend-item"><div class="legend-dot seminar"></div> Séminaire</div>
+      <div class="legend-item"><div class="legend-dot workshop"></div> Atelier / Workshop</div>
+      <div class="legend-item"><div class="legend-dot deadline"></div> Date limite</div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3 class="sidebar-title">Prochains événements</h3>
+      <div class="upcoming-list">
+        <div class="upcoming-item">
+          <p class="upcoming-date">15 Nov. 2025</p>
+          <p class="upcoming-name">Colloque – Littéracies à l'ère du numérique</p>
+        </div>
+        <div class="upcoming-item">
+          <p class="upcoming-date">30 Nov. 2025</p>
+          <p class="upcoming-name">Date limite — Soumissions Colloque Kénitra</p>
+        </div>
+        <div class="upcoming-item">
+          <p class="upcoming-date">22 Janv. 2026</p>
+          <p class="upcoming-name">Séminaire — Inclusion scolaire (Lille + en ligne)</p>
+        </div>
+        <div class="upcoming-item">
+          <p class="upcoming-date">08 Mars 2026</p>
+          <p class="upcoming-name">Atelier — Méthodologies de recherche (Bruxelles)</p>
+        </div>
+        <div class="upcoming-item">
+          <p class="upcoming-date">14 Juin 2026</p>
+          <p class="upcoming-name">Conférence internationale — Formation & Littéracies (Kénitra)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card" style="background:var(--ink); border-top-color:var(--gold-light);">
+      <h3 class="sidebar-title" style="color:white;">Proposer un événement</h3>
+      <p style="font-size:0.82rem;color:rgba(247,243,238,0.6);line-height:1.7;margin-bottom:1.2rem;">Vous organisez un événement scientifique en lien avec les littéracies ? Signalez-le à l'AIRL.</p>
+      <a href="contact.html" style="display:inline-block;padding:0.7rem 1.5rem;background:var(--gold);color:var(--ink);text-decoration:none;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:500;">Nous contacter →</a>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-brand">AIR<span>L</span></div>
+  <ul class="footer-nav">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="membres.html">Membres</a></li>
+    <li><a href="activites.html">Activités</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 AIRL</p>
+</footer>
+
+<script>
+  // ── Calendar State
+  let currentYear = 2025, currentMonth = 10; // 0-indexed, 10 = November
+  const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+  // Events data
+  const events = {
+    '2025-11-15': [{type:'colloque', title:'Colloque – Littéracies numériques'}],
+    '2025-11-30': [{type:'deadline', title:'Date limite soumissions'}],
+    '2026-01-22': [{type:'seminar', title:'Séminaire – Inclusion scolaire'}],
+    '2026-03-08': [{type:'workshop', title:'Atelier – Méthodologies'}],
+    '2026-03-31': [{type:'deadline', title:'Date limite revue AIRL'}],
+    '2026-06-14': [{type:'colloque', title:'Conférence internationale'}],
+  };
+
+  function renderCalendar() {
+    const label = monthNames[currentMonth] + ' ' + currentYear;
+    document.getElementById('calMonthLabel').textContent = label;
+
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const startDay = firstDay === 0 ? 6 : firstDay - 1; // Monday start
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const daysInPrev = new Date(currentYear, currentMonth, 0).getDate();
+
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+
+    let html = '';
+    let totalCells = Math.ceil((startDay + daysInMonth) / 7) * 7;
+
+    for (let i = 0; i < totalCells; i++) {
+      let day, isOther = false, mo = currentMonth, yr = currentYear;
+      if (i < startDay) {
+        day = daysInPrev - startDay + i + 1;
+        isOther = true;
+        mo = currentMonth - 1 < 0 ? 11 : currentMonth - 1;
+        yr = currentMonth - 1 < 0 ? currentYear - 1 : currentYear;
+      } else if (i >= startDay + daysInMonth) {
+        day = i - startDay - daysInMonth + 1;
+        isOther = true;
+        mo = currentMonth + 1 > 11 ? 0 : currentMonth + 1;
+        yr = currentMonth + 1 > 11 ? currentYear + 1 : currentYear;
+      } else {
+        day = i - startDay + 1;
+      }
+
+      const dateStr = `${yr}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+      const isToday = dateStr === todayStr;
+      const dayEvents = events[dateStr] || [];
+
+      html += `<div class="cal-day${isOther?' other-month':''}${isToday?' today':''}">`;
+      html += `<div class="cal-day-num">${day}</div>`;
+      for (const ev of dayEvents) {
+        html += `<div class="cal-event ${ev.type}">${ev.title}</div>`;
+      }
+      html += '</div>';
+    }
+    document.getElementById('calDays').innerHTML = html;
+  }
+
+  function prevMonth() {
+    currentMonth--;
+    if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+    renderCalendar();
+  }
+
+  function nextMonth() {
+    currentMonth++;
+    if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+    renderCalendar();
+  }
+
+  function setView(view, btn) {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (view === 'grid') {
+      document.getElementById('calGrid').classList.remove('hidden');
+      document.getElementById('listView').classList.remove('active');
+    } else {
+      document.getElementById('calGrid').classList.add('hidden');
+      document.getElementById('listView').classList.add('active');
+    }
+  }
+
+  renderCalendar();
+</script>
+</body>
+</html>

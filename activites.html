@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activités Scientifiques – AIRL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+ :root {
+  --ink: #1f4e79;         /* bleu principal (remplace noir) */
+  --cream: #f5f7fa;       /* fond clair doux */
+  
+  --gold: #6fbf73;        /* vert (couleur principale action) */
+  --gold-light: #7a5fa3;  /* violet (accent moderne) */
+
+  --sage: #2e6f95;        /* bleu secondaire */
+  --rust: #5a4b8a;        /* violet foncé (hover / profondeur) */
+  
+  --accent: #4aa3df;      /* bleu clair (liens / interaction) */
+}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1.2rem 4rem; background:rgba(247,243,238,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(184,147,58,0.2); }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:var(--ink); text-decoration:none; }
+  .nav-brand span { color:var(--gold); }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a { text-decoration:none; color:var(--ink); font-size:0.82rem; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; opacity:0.7; transition:opacity 0.2s,color 0.2s; }
+  .nav-links a:hover,.nav-links a.active { opacity:1; color:var(--gold); }
+
+  /* ── HERO ── */
+  .page-header { padding:10rem 5rem 5rem; background:var(--rust); position:relative; overflow:hidden; }
+  .page-header::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40 L40 0' stroke='rgba(255,255,255,0.04)' stroke-width='1'/%3E%3C/svg%3E") center/40px; }
+  .page-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:80px; background:var(--cream); clip-path:polygon(0 100%,100% 100%,100% 0); }
+  .page-header-content { position:relative; z-index:2; animation:fadeUp 0.8s 0.2s both; }
+  .page-eyebrow { font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; color:rgba(247,243,238,0.65); margin-bottom:1.2rem; }
+  .page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:white; line-height:1.1; }
+  .page-title em { font-style:italic; color:#8ad4f4; }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display:flex; gap:0; background:white;
+    border-bottom:1px solid rgba(15,26,46,0.1);
+    position:sticky; top:72px; z-index:50;
+    box-shadow:0 2px 20px rgba(15,26,46,0.05);
+  }
+  .tab-btn {
+    flex:1; padding:1.5rem 2rem;
+    background:transparent; border:none; cursor:pointer;
+    font-family:'DM Sans',sans-serif; font-size:0.82rem;
+    letter-spacing:0.12em; text-transform:uppercase;
+    color:rgba(15,26,46,0.5); border-bottom:2px solid transparent;
+    transition:all 0.2s;
+  }
+  .tab-btn:hover { color:var(--ink); }
+  .tab-btn.active { color:var(--rust); border-bottom-color:var(--rust); font-weight:500; }
+
+  .tab-section { display:none; padding:5rem; }
+  .tab-section.active { display:block; }
+
+  /* ── EVENTS ── */
+  .events-header { margin-bottom:3rem; }
+  .events-title { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; }
+
+  .event-card {
+    display:grid; grid-template-columns:140px 1fr auto;
+    gap:2.5rem; align-items:start;
+    padding:2.5rem 0; border-bottom:1px solid rgba(15,26,46,0.08);
+    transition:padding-left 0.3s;
+    cursor:default;
+  }
+  .event-card:hover { padding-left:1rem; }
+  .event-card:last-child { border-bottom:none; }
+
+  .event-date-box {
+    text-align:center; background:var(--ink); color:white;
+    padding:1.2rem 1rem; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .event-day { font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:600; line-height:1; }
+  .event-month { font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold-light); margin-top:0.2rem; }
+  .event-year { font-size:0.65rem; color:rgba(247,243,238,0.4); }
+
+  .event-info {}
+  .event-type { display:inline-block; padding:0.2rem 0.7rem; font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.8rem; font-weight:500; }
+  .event-type.conference { background:#e8f0ff; color:#2d4fa0; }
+  .event-type.workshop { background:#e8f7ee; color:#2d6a4f; }
+  .event-type.seminar { background:#f7eee8; color:#8b3a2a; }
+  .event-type.colloque { background:#f3e8f7; color:#6a2d8b; }
+  .event-title { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; margin-bottom:0.5rem; }
+  .event-location { font-size:0.82rem; color:rgba(15,26,46,0.55); }
+
+  .event-status { align-self:center; }
+  .status-badge { padding:0.4rem 1rem; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:500; }
+  .status-badge.upcoming { background:rgba(184,147,58,0.1); color:var(--gold); border:1px solid var(--gold); }
+  .status-badge.open { background:rgba(45,106,79,0.1); color:#2d6a4f; border:1px solid #2d6a4f; }
+  .status-badge.past { background:rgba(15,26,46,0.06); color:rgba(15,26,46,0.4); border:1px solid rgba(15,26,46,0.15); }
+
+  /* ── PROJECTS ── */
+  .projects-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2rem; }
+
+  .project-card {
+    background:white; padding:2.5rem;
+    border-left:4px solid var(--sage);
+    transition:transform 0.3s, box-shadow 0.3s;
+    cursor:default;
+  }
+  .project-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(15,26,46,0.1); }
+  .project-card:nth-child(even) { border-left-color:var(--gold); }
+  .project-card:nth-child(3) { border-left-color:var(--rust); }
+
+  .project-phase { font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(15,26,46,0.45); margin-bottom:0.8rem; }
+  .project-title { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:600; margin-bottom:1rem; line-height:1.3; }
+  .project-desc { font-size:0.86rem; line-height:1.8; color:rgba(15,26,46,0.65); margin-bottom:1.5rem; }
+
+  .project-meta { display:flex; gap:1.5rem; }
+  .project-meta-item { font-size:0.75rem; color:rgba(15,26,46,0.5); }
+  .project-meta-item strong { display:block; color:var(--ink); font-weight:500; font-size:0.8rem; margin-bottom:0.1rem; }
+
+  /* ── PUBLICATIONS ── */
+  .pub-list {}
+  .pub-item {
+    padding:2rem 0; border-bottom:1px solid rgba(15,26,46,0.07);
+    display:grid; grid-template-columns:auto 1fr;
+    gap:2rem; align-items:start;
+  }
+  .pub-item:last-child { border-bottom:none; }
+  .pub-year { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600; color:var(--gold); width:60px; padding-top:0.2rem; }
+  .pub-content {}
+  .pub-title { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; margin-bottom:0.4rem; }
+  .pub-authors { font-size:0.82rem; color:rgba(15,26,46,0.6); margin-bottom:0.3rem; }
+  .pub-journal { font-size:0.78rem; font-style:italic; color:var(--sage); }
+  .pub-type { display:inline-block; margin-top:0.5rem; padding:0.2rem 0.6rem; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; background:rgba(90,122,110,0.1); color:var(--sage); }
+
+  /* ── FOOTER ── */
+  footer { background:var(--ink); padding:3rem 5rem; display:flex; justify-content:space-between; align-items:center; }
+  .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:white; }
+  .footer-brand span { color:var(--gold); }
+  .footer-nav { display:flex; gap:2rem; list-style:none; }
+  .footer-nav a { text-decoration:none; color:rgba(247,243,238,0.5); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.2s; }
+  .footer-nav a:hover { color:var(--gold); }
+  .footer-copy { font-size:0.74rem; color:rgba(247,243,238,0.35); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+  <img src="logo.jpeg" alt="AIRL" style="height:45px; width:auto;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="qui-sommes-nous.html">À Propos</a></li>
+    <li><a href="membres.html">Membres</a></li>
+    <li><a href="axes-recherche.html">Recherches</a></li>
+    <li><a href="activites.html" class="active">Activités</a></li>
+    <li><a href="partenaires.html">Partenaires</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="agenda.html">Agenda</a></li>
+  </ul>
+</nav>
+
+<section class="page-header">
+  <div class="page-header-content">
+    <p class="page-eyebrow">Interface 05 · Activités scientifiques</p>
+    <h1 class="page-title">Activités <em>Scientifiques</em></h1>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('evenements', this)">Événements</button>
+  <button class="tab-btn" onclick="showTab('projets', this)">Projets</button>
+  <button class="tab-btn" onclick="showTab('publications', this)">Publications</button>
+</div>
+
+<!-- TAB: ÉVÉNEMENTS -->
+<div class="tab-section active" id="tab-evenements">
+  <div class="events-header">
+    <span style="font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:0.8rem;">Agenda scientifique</span>
+    <h2 class="events-title">Événements & Manifestations scientifiques</h2>
+  </div>
+
+  <div class="event-card">
+    <div class="event-date-box"><span class="event-day">15</span><span class="event-month">Nov.</span><span class="event-year">2025</span></div>
+    <div class="event-info">
+      <span class="event-type colloque">Colloque International</span>
+      <h3 class="event-title">Littéracies à l'ère du numérique : enjeux, pratiques et perspectives</h3>
+      <p class="event-location">📍 Université Abdelmalek Essaâdi, Tétouan, Maroc</p>
+    </div>
+    <div class="event-status"><span class="status-badge upcoming">À venir</span></div>
+  </div>
+
+  <div class="event-card">
+    <div class="event-date-box"><span class="event-day">22</span><span class="event-month">Janv.</span><span class="event-year">2026</span></div>
+    <div class="event-info">
+      <span class="event-type seminar">Séminaire</span>
+      <h3 class="event-title">Inclusion scolaire et besoins éducatifs particuliers : approches comparées</h3>
+      <p class="event-location">📍 Université de Lille, France (et en ligne)</p>
+    </div>
+    <div class="event-status"><span class="status-badge upcoming">À venir</span></div>
+  </div>
+
+  <div class="event-card">
+    <div class="event-date-box"><span class="event-day">08</span><span class="event-month">Mars</span><span class="event-year">2026</span></div>
+    <div class="event-info">
+      <span class="event-type workshop">Atelier de recherche</span>
+      <h3 class="event-title">Méthodologies de recherche en littéracies : approches quantitatives et qualitatives</h3>
+      <p class="event-location">📍 Université Libre de Bruxelles, Belgique</p>
+    </div>
+    <div class="event-status"><span class="status-badge open">Inscriptions ouvertes</span></div>
+  </div>
+
+  <div class="event-card">
+    <div class="event-date-box"><span class="event-day">14</span><span class="event-month">Juin</span><span class="event-year">2026</span></div>
+    <div class="event-info">
+      <span class="event-type conference">Conférence internationale</span>
+      <h3 class="event-title">Formation, professionnalisation et littéracies en contextes africains et européens</h3>
+      <p class="event-location">📍 Université Ibn Tofail, Kénitra, Maroc</p>
+    </div>
+    <div class="event-status"><span class="status-badge upcoming">À venir</span></div>
+  </div>
+
+  <div class="event-card">
+    <div class="event-date-box"><span class="event-day">03</span><span class="event-month">Mai</span><span class="event-year">2025</span></div>
+    <div class="event-info">
+      <span class="event-type colloque">Colloque</span>
+      <h3 class="event-title">Coopération Sud-Sud : partage d'expériences en éducation et formation</h3>
+      <p class="event-location">📍 Université Hassan II, Casablanca, Maroc</p>
+    </div>
+    <div class="event-status"><span class="status-badge past">Terminé</span></div>
+  </div>
+
+  <div class="event-card">
+    <div class="event-date-box"><span class="event-day">18</span><span class="event-month">Oct.</span><span class="event-year">2024</span></div>
+    <div class="event-info">
+      <span class="event-type seminar">Séminaire doctoral</span>
+      <h3 class="event-title">Journée des doctorants de l'AIRL : présentation des travaux en cours</h3>
+      <p class="event-location">📍 ENS-Université Abdelmalek Essaâdi, Tétouan</p>
+    </div>
+    <div class="event-status"><span class="status-badge past">Terminé</span></div>
+  </div>
+</div>
+
+<!-- TAB: PROJETS -->
+<div class="tab-section" id="tab-projets">
+  <div class="events-header">
+    <span style="font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:0.8rem;">Recherche collaborative</span>
+    <h2 class="events-title">Projets de recherche en cours</h2>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <p class="project-phase">Phase 2 · En cours</p>
+      <h3 class="project-title">Littéracies numériques et pratiques pédagogiques dans l'enseignement supérieur</h3>
+      <p class="project-desc">Ce projet examine comment les enseignants du supérieur intègrent les outils numériques dans leurs pratiques pédagogiques et comment les étudiants développent des compétences littéraciques adaptées aux environnements numériques.</p>
+      <div class="project-meta">
+        <div class="project-meta-item"><strong>Durée</strong>2024–2027</div>
+        <div class="project-meta-item"><strong>Partenaires</strong>Maroc, France, Belgique</div>
+        <div class="project-meta-item"><strong>Financement</strong>International</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <p class="project-phase">Phase 1 · Démarrage</p>
+      <h3 class="project-title">Inclusion scolaire des élèves en situation de handicap : étude comparative internationale</h3>
+      <p class="project-desc">Étude comparative des dispositifs d'inclusion scolaire dans six pays africains et européens, visant à identifier les pratiques les plus efficaces pour l'accompagnement des élèves à besoins particuliers.</p>
+      <div class="project-meta">
+        <div class="project-meta-item"><strong>Durée</strong>2025–2028</div>
+        <div class="project-meta-item"><strong>Partenaires</strong>6 pays</div>
+        <div class="project-meta-item"><strong>Axe</strong>Axe 5</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <p class="project-phase">Phase 3 · Finalisation</p>
+      <h3 class="project-title">Transition lycée-université et développement des compétences académiques</h3>
+      <p class="project-desc">Analyse des difficultés rencontrées lors de la transition entre l'enseignement secondaire et supérieur, et développement d'outils d'accompagnement favorisant la réussite académique.</p>
+      <div class="project-meta">
+        <div class="project-meta-item"><strong>Durée</strong>2022–2025</div>
+        <div class="project-meta-item"><strong>Partenaires</strong>Maroc, Canada, Suisse</div>
+        <div class="project-meta-item"><strong>Axe</strong>Axes 1, 3</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <p class="project-phase">Phase 1 · En cours</p>
+      <h3 class="project-title">Alphabétisation et formation continue : nouvelles approches en Afrique subsaharienne</h3>
+      <p class="project-desc">Projet de coopération Sud-Sud visant à documenter et partager des pratiques innovantes d'alphabétisation et de formation continue dans les contextes africains francophones et lusophones.</p>
+      <div class="project-meta">
+        <div class="project-meta-item"><strong>Durée</strong>2025–2028</div>
+        <div class="project-meta-item"><strong>Partenaires</strong>Afrique, Brésil</div>
+        <div class="project-meta-item"><strong>Axe</strong>Axe 5</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TAB: PUBLICATIONS -->
+<div class="tab-section" id="tab-publications">
+  <div class="events-header">
+    <span style="font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:0.8rem;">Diffusion scientifique</span>
+    <h2 class="events-title">Publications & Revues</h2>
+  </div>
+
+  <div class="pub-list">
+    <div class="pub-item">
+      <span class="pub-year">2025</span>
+      <div class="pub-content">
+        <h3 class="pub-title">Littéracies numériques et pratiques enseignantes : état des lieux et perspectives</h3>
+        <p class="pub-authors">El Houdna Y., Pollet M.-C., Delcambre I. (dir.)</p>
+        <p class="pub-journal">Revue internationale de littéracies et didactiques</p>
+        <span class="pub-type">Article de revue</span>
+      </div>
+    </div>
+    <div class="pub-item">
+      <span class="pub-year">2025</span>
+      <div class="pub-content">
+        <h3 class="pub-title">Inclusion scolaire et formes de littéracies : approches comparées Afrique-Europe</h3>
+        <p class="pub-authors">Zaid A., Bakkali I., Odier-Guedj D.</p>
+        <p class="pub-journal">Éducation & Formation (Numéro spécial)</p>
+        <span class="pub-type">Chapitre d'ouvrage collectif</span>
+      </div>
+    </div>
+    <div class="pub-item">
+      <span class="pub-year">2024</span>
+      <div class="pub-content">
+        <h3 class="pub-title">Coopération scientifique Sud-Sud en éducation : bilan et perspectives</h3>
+        <p class="pub-authors">AIRL (collectif)</p>
+        <p class="pub-journal">Cahiers de l'AIRL, Vol. 1</p>
+        <span class="pub-type">Numéro de revue</span>
+      </div>
+    </div>
+    <div class="pub-item">
+      <span class="pub-year">2024</span>
+      <div class="pub-content">
+        <h3 class="pub-title">Formation continue et professionnalisation : enjeux pour les enseignants du supérieur</h3>
+        <p class="pub-authors">Boyer C., Gagnon R., Lanctôt S.</p>
+        <p class="pub-journal">Recherches en éducation</p>
+        <span class="pub-type">Article de revue</span>
+      </div>
+    </div>
+    <div class="pub-item">
+      <span class="pub-year">2024</span>
+      <div class="pub-content">
+        <h3 class="pub-title">Actes du premier colloque international de l'AIRL</h3>
+        <p class="pub-authors">El Farahi A., Rinck F., Navarro F. (dir.)</p>
+        <p class="pub-journal">Éditions AIRL</p>
+        <span class="pub-type">Actes de colloque</span>
+      </div>
+    </div>
+    <div class="pub-item">
+      <span class="pub-year">2023</span>
+      <div class="pub-content">
+        <h3 class="pub-title">Les littéracies en contexte professionnel : nouvelles exigences et pratiques émergentes</h3>
+        <p class="pub-authors">Kervyn B., Mauraux F., Cristóvão V.L.L.</p>
+        <p class="pub-journal">Lidil – Revue de linguistique et de didactique des langues</p>
+        <span class="pub-type">Article de revue</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">AIR<span>L</span></div>
+  <ul class="footer-nav">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="membres.html">Membres</a></li>
+    <li><a href="axes-recherche.html">Recherches</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 AIRL</p>
+</footer>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>

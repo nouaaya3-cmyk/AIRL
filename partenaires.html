@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nos Partenaires – AIRL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+    :root {
+  --ink: #1f4e79;         /* bleu principal (remplace noir) */
+  --cream: #4a79c1;       /* fond clair doux */
+  
+  --gold: #9773de;        /* vert (couleur principale action) */
+  --gold-light: #7a5fa3;  /* violet (accent moderne) */
+
+  --sage: #2e6f95;        /* bleu secondaire */
+  --rust: #5a4b8a;        /* violet foncé (hover / profondeur) */
+  
+  --accent: #4aa3df;      /* bleu clair (liens / interaction) */
+}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1.2rem 4rem; background:rgba(247,243,238,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(184,147,58,0.2); }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:var(--ink); text-decoration:none; }
+  .nav-brand span { color:var(--gold); }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a { text-decoration:none; color:var(--ink); font-size:0.82rem; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; opacity:0.7; transition:opacity 0.2s,color 0.2s; }
+  .nav-links a:hover,.nav-links a.active { opacity:1; color:var(--gold); }
+
+  .page-header { padding:10rem 5rem 5rem; background:linear-gradient(160deg,#1a2e2a,#0f1a2e); position:relative; overflow:hidden; }
+  .page-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:80px; background:var(--cream); clip-path:polygon(0 100%,100% 100%,100% 0); }
+  .page-header-content { position:relative; z-index:2; animation:fadeUp 0.8s 0.2s both; }
+  .page-eyebrow { font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--sage); margin-bottom:1.2rem; }
+  .page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:white; line-height:1.1; }
+  .page-title em { color:var(--gold-light); font-style:italic; }
+
+  .section-label { font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:1rem; }
+
+  /* ── INTRO ── */
+  .intro-band { padding:5rem; border-bottom:1px solid rgba(15,26,46,0.08); }
+  .intro-text { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:300; line-height:1.6; max-width:900px; color:var(--ink); }
+  .intro-text em { font-style:italic; color:var(--gold); }
+
+  /* ── REGIONS ── */
+  .regions-section { padding:5rem; }
+  .regions-title { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; margin-bottom:3rem; }
+
+  .region-group { margin-bottom:4rem; }
+  .region-label { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; }
+  .region-flag { width:28px; height:2px; }
+  .region-flag.maroc { background:linear-gradient(90deg,#c1121f,#006233); }
+  .region-flag.europe { background:linear-gradient(90deg,#003399,#FFCC00); }
+  .region-flag.amerique { background:linear-gradient(90deg,#2d6a4f,#1d3557); }
+  .region-flag.afrique { background:linear-gradient(90deg,#f77f00,#d62828); }
+  .region-name { font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(15,26,46,0.5); font-weight:500; }
+
+  .partner-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+
+  .partner-card {
+    background:white; padding:2rem;
+    border-top:2px solid rgba(15,26,46,0.08);
+    transition:border-color 0.3s, transform 0.3s;
+    cursor:default;
+  }
+  .partner-card:hover { border-color:var(--gold); transform:translateY(-3px); }
+  .partner-abbr { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:rgba(15,26,46,0.12); margin-bottom:0.5rem; }
+  .partner-name { font-size:0.86rem; font-weight:500; color:var(--ink); margin-bottom:0.3rem; line-height:1.4; }
+  .partner-city { font-size:0.75rem; color:rgba(15,26,46,0.45); }
+
+  /* ── COOP TYPES ── */
+  .coop-section { background:var(--ink); padding:5rem; }
+  .coop-title { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:white; margin-bottom:3rem; }
+  .coop-types { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(184,147,58,0.1); }
+  .coop-type { background:var(--ink); padding:2.5rem; }
+  .coop-type-icon { font-size:2rem; margin-bottom:1rem; }
+  .coop-type-title { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600; color:white; margin-bottom:0.8rem; }
+  .coop-type-text { font-size:0.82rem; line-height:1.7; color:rgba(247,243,238,0.55); }
+
+  footer { background:var(--ink); padding:3rem 5rem; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(247,243,238,0.06); }
+  .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:white; }
+  .footer-brand span { color:var(--gold); }
+  .footer-nav { display:flex; gap:2rem; list-style:none; }
+  .footer-nav a { text-decoration:none; color:rgba(247,243,238,0.5); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.2s; }
+  .footer-nav a:hover { color:var(--gold); }
+  .footer-copy { font-size:0.74rem; color:rgba(247,243,238,0.35); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+  <img src="logo.jpeg" alt="AIRL" style="height:45px; width:auto;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="qui-sommes-nous.html">À Propos</a></li>
+    <li><a href="membres.html">Membres</a></li>
+    <li><a href="axes-recherche.html">Recherches</a></li>
+    <li><a href="activites.html">Activités</a></li>
+    <li><a href="partenaires.html" class="active">Partenaires</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="agenda.html">Agenda</a></li>
+  </ul>
+</nav>
+
+<section class="page-header">
+  <div class="page-header-content">
+    <p class="page-eyebrow">Interface 06 · Réseau</p>
+    <h1 class="page-title">Nos <em>Partenaires</em></h1>
+  </div>
+</section>
+
+<div class="intro-band">
+  <p class="intro-text">
+    L'AIRL vise un cadre de collaboration purement scientifique entre pays de <em>l'Afrique, de l'Amérique du nord, de l'Amérique latine, de l'Europe et de l'Asie</em>, sur une base bilatérale, régionale, interrégionale, nationale et internationale.
+  </p>
+</div>
+
+<section class="regions-section">
+  <h2 class="regions-title">Institutions partenaires par région</h2>
+
+  <!-- MAROC -->
+  <div class="region-group">
+    <div class="region-label">
+      <div class="region-flag maroc"></div>
+      <span class="region-name">Maroc</span>
+    </div>
+    <div class="partner-grid">
+      <div class="partner-card">
+        <p class="partner-abbr">UAE</p>
+        <p class="partner-name">Université Abdelmalek Essaâdi – ENS Tétouan</p>
+        <p class="partner-city">Tétouan, Maroc</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">UIT</p>
+        <p class="partner-name">Université Ibn Tofail – ESEF Kénitra</p>
+        <p class="partner-city">Kénitra, Maroc</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">UH2</p>
+        <p class="partner-name">Université Hassan II – FLSH Mohammedia</p>
+        <p class="partner-city">Casablanca, Maroc</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">UM5</p>
+        <p class="partner-name">Université Mohamed V</p>
+        <p class="partner-city">Rabat, Maroc</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">UMS</p>
+        <p class="partner-name">Université Moulay Smail – ENS Meknès</p>
+        <p class="partner-city">Meknès, Maroc</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">ISPITS</p>
+        <p class="partner-name">Institut Supérieur des Professions Infirmières et Techniques de Santé</p>
+        <p class="partner-city">Tétouan, Maroc</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EUROPE -->
+  <div class="region-group">
+    <div class="region-label">
+      <div class="region-flag europe"></div>
+      <span class="region-name">Europe</span>
+    </div>
+    <div class="partner-grid">
+      <div class="partner-card">
+        <p class="partner-abbr">ULille</p>
+        <p class="partner-name">Université de Lille – INSPE</p>
+        <p class="partner-city">Lille, France</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">ULB</p>
+        <p class="partner-name">Université Libre de Bruxelles – CEDUEL</p>
+        <p class="partner-city">Bruxelles, Belgique</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">HEP-VD</p>
+        <p class="partner-name">Haute École Pédagogique du canton de Vaud</p>
+        <p class="partner-city">Lausanne, Suisse</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">UCL</p>
+        <p class="partner-name">Université catholique de Louvain</p>
+        <p class="partner-city">Bruxelles, Belgique</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">Sorbonne</p>
+        <p class="partner-name">Université Sorbonne Nouvelle-Paris</p>
+        <p class="partner-city">Paris, France</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">UGA</p>
+        <p class="partner-name">Université Grenoble Alpes</p>
+        <p class="partner-city">Grenoble, France</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AMÉRIQUES -->
+  <div class="region-group">
+    <div class="region-label">
+      <div class="region-flag amerique"></div>
+      <span class="region-name">Amériques</span>
+    </div>
+    <div class="partner-grid">
+      <div class="partner-card">
+        <p class="partner-abbr">USP</p>
+        <p class="partner-name">Universidade de São Paulo</p>
+        <p class="partner-city">São Paulo, Brésil</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">PUC Minas</p>
+        <p class="partner-name">Pontifícia Universidade Católica de Minas Gerais</p>
+        <p class="partner-city">Belo Horizonte, Brésil</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">UQTR</p>
+        <p class="partner-name">Université du Québec à Trois-Rivières</p>
+        <p class="partner-city">Trois-Rivières, Canada</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">Dartmouth</p>
+        <p class="partner-name">Dartmouth College</p>
+        <p class="partner-city">New Hampshire, USA</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">UChile</p>
+        <p class="partner-name">Universidad de Chile</p>
+        <p class="partner-city">Santiago, Chili / Argentine</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">UNESP</p>
+        <p class="partner-name">Universidade Estadual Paulista</p>
+        <p class="partner-city">São José do Rio Preto, Brésil</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFRIQUE DU NORD -->
+  <div class="region-group">
+    <div class="region-label">
+      <div class="region-flag afrique"></div>
+      <span class="region-name">Afrique du Nord</span>
+    </div>
+    <div class="partner-grid">
+      <div class="partner-card">
+        <p class="partner-abbr">ENS-Bou.</p>
+        <p class="partner-name">École Normale Supérieure de Bouzaréah</p>
+        <p class="partner-city">Alger, Algérie</p>
+      </div>
+      <div class="partner-card">
+        <p class="partner-abbr">ENS-Con.</p>
+        <p class="partner-name">École Normale Supérieure de Constantine</p>
+        <p class="partner-city">Constantine, Algérie</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COOP TYPES -->
+<section class="coop-section">
+  <h2 class="coop-title">Types de coopération scientifique</h2>
+  <div class="coop-types">
+    <div class="coop-type">
+      <div class="coop-type-icon">🌍</div>
+      <h3 class="coop-type-title">Bilatérale</h3>
+      <p class="coop-type-text">Accords entre deux institutions pour des échanges de chercheurs, co-tutelles de thèses, et publications communes.</p>
+    </div>
+    <div class="coop-type">
+      <div class="coop-type-icon">🌐</div>
+      <h3 class="coop-type-title">Régionale & Interrégionale</h3>
+      <p class="coop-type-text">Réseaux régionaux (maghrébin, européen, latino-américain) pour des projets de recherche à grande échelle.</p>
+    </div>
+    <div class="coop-type">
+      <div class="coop-type-icon">🤝</div>
+      <h3 class="coop-type-title">Sud-Sud</h3>
+      <p class="coop-type-text">Partage d'expériences et d'expertise entre pays du Sud, notamment entre pays africains, pour un développement scientifique mutuel.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">AIR<span>L</span></div>
+  <ul class="footer-nav">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="membres.html">Membres</a></li>
+    <li><a href="activites.html">Activités</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 AIRL</p>
+</footer>
+
+</body>
+</html>

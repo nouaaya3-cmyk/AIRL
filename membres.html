@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Membres – AIRL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f1a2e; --cream: #f7f3ee; --gold: #b8933a;
+    --gold-light: #d4ae62; --sage: #5a7a6e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:1.2rem 4rem;
+    background:rgba(247,243,238,0.92); backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(184,147,58,0.2);
+  }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:var(--ink); text-decoration:none; }
+  .nav-brand span { color:var(--gold); }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a { text-decoration:none; color:var(--ink); font-size:0.82rem; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; opacity:0.7; transition:opacity 0.2s,color 0.2s; }
+  .nav-links a:hover,.nav-links a.active { opacity:1; color:var(--gold); }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    padding:10rem 5rem 5rem; background:var(--sage); position:relative; overflow:hidden;
+  }
+  .page-header::after {
+    content:''; position:absolute; bottom:0; left:0; right:0; height:80px;
+    background:var(--cream); clip-path:polygon(0 100%,100% 100%,100% 0);
+  }
+  .page-header::before {
+    content:''; position:absolute; inset:0;
+    background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1'%3E%3Ccircle cx='30' cy='30' r='25'/%3E%3C/g%3E%3C/svg%3E") center/60px;
+  }
+  .page-header-content { position:relative; z-index:2; animation:fadeUp 0.8s 0.2s both; }
+  .page-eyebrow { font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; color:rgba(247,243,238,0.7); margin-bottom:1.2rem; }
+  .page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:white; line-height:1.1; }
+
+  /* ── FILTERS ── */
+  .filter-bar {
+    padding:2rem 5rem; background:white;
+    display:flex; gap:1rem; align-items:center; flex-wrap:wrap;
+    border-bottom:1px solid rgba(15,26,46,0.08);
+    position:sticky; top:72px; z-index:50;
+    box-shadow:0 2px 20px rgba(15,26,46,0.05);
+  }
+  .filter-label { font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(15,26,46,0.5); margin-right:0.5rem; }
+  .filter-btn {
+    padding:0.4rem 1.2rem; border:1.5px solid rgba(15,26,46,0.15);
+    background:transparent; cursor:pointer; font-family:'DM Sans',sans-serif;
+    font-size:0.8rem; color:var(--ink); transition:all 0.2s; border-radius:2px;
+  }
+  .filter-btn:hover,.filter-btn.active { border-color:var(--gold); color:var(--gold); background:rgba(184,147,58,0.05); }
+
+  /* ── COMMITTEE SECTION ── */
+  .committee-section { padding:5rem; }
+  .committee-header { display:flex; align-items:baseline; gap:2rem; margin-bottom:3rem; }
+  .committee-title { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; }
+  .committee-count { font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); padding:0.3rem 0.8rem; border:1px solid var(--gold); }
+
+  /* ── HONOUR COMMITTEE ── */
+  .honour-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem;
+    margin-bottom:5rem;
+  }
+  .honour-card {
+    padding:2rem; background:white;
+    border-left:4px solid var(--gold);
+    transition:transform 0.3s, box-shadow 0.3s;
+    cursor:default;
+  }
+  .honour-card:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(15,26,46,0.1); }
+  .honour-name { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:600; margin-bottom:0.4rem; }
+  .honour-role { font-size:0.78rem; line-height:1.6; color:rgba(15,26,46,0.6); }
+  .honour-inst { font-size:0.75rem; color:var(--gold); margin-top:0.5rem; font-weight:400; }
+
+  /* ── SCIENTIFIC COMMITTEE ── */
+  .scientific-section {
+    background:var(--ink); padding:5rem; margin:0;
+  }
+  .sci-header { margin-bottom:3rem; }
+  .sci-eyebrow { font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+  .sci-title { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:white; }
+
+  /* Search box */
+  .search-box-wrapper { margin-bottom:2.5rem; }
+  .search-box {
+    width:100%; max-width:400px;
+    padding:0.8rem 1.5rem;
+    background:rgba(247,243,238,0.06);
+    border:1px solid rgba(184,147,58,0.25);
+    color:white; font-family:'DM Sans',sans-serif; font-size:0.88rem;
+    outline:none; transition:border-color 0.2s;
+  }
+  .search-box::placeholder { color:rgba(247,243,238,0.35); }
+  .search-box:focus { border-color:var(--gold); }
+
+  .sci-grid {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:rgba(184,147,58,0.1);
+  }
+  .sci-card {
+    background:var(--ink); padding:1.5rem;
+    transition:background 0.25s;
+    cursor:default;
+  }
+  .sci-card:hover { background:rgba(247,243,238,0.04); }
+  .sci-card.hidden { display:none; }
+  .sci-name {
+    font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:600;
+    color:white; margin-bottom:0.3rem; line-height:1.3;
+  }
+  .sci-affil { font-size:0.74rem; color:rgba(247,243,238,0.55); line-height:1.5; }
+  .sci-country { display:inline-block; margin-top:0.5rem; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-light); }
+
+  /* ── FOOTER ── */
+  footer { background:var(--ink); padding:3rem 5rem; display:flex; justify-content:space-between; align-items:center; }
+  .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:white; }
+  .footer-brand span { color:var(--gold); }
+  .footer-nav { display:flex; gap:2rem; list-style:none; }
+  .footer-nav a { text-decoration:none; color:rgba(247,243,238,0.5); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.2s; }
+  .footer-nav a:hover { color:var(--gold); }
+  .footer-copy { font-size:0.74rem; color:rgba(247,243,238,0.35); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+  <img src="logo.jpeg" alt="AIRL" style="height:45px; width:auto;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="qui-sommes-nous.html">À Propos</a></li>
+    <li><a href="membres.html" class="active">Membres</a></li>
+    <li><a href="axes-recherche.html">Recherches</a></li>
+    <li><a href="activites.html">Activités</a></li>
+    <li><a href="partenaires.html">Partenaires</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="agenda.html">Agenda</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <div class="page-header-content">
+    <p class="page-eyebrow">Interface 03 · Membres</p>
+    <h1 class="page-title">Nos Membres</h1>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Filtrer par :</span>
+  <button class="filter-btn active" onclick="filterMembers('all', this)">Tous</button>
+  <button class="filter-btn" onclick="filterMembers('maroc', this)">Maroc</button>
+  <button class="filter-btn" onclick="filterMembers('france', this)">France</button>
+  <button class="filter-btn" onclick="filterMembers('bresil', this)">Brésil</button>
+  <button class="filter-btn" onclick="filterMembers('belgique', this)">Belgique</button>
+  <button class="filter-btn" onclick="filterMembers('suisse', this)">Suisse</button>
+  <button class="filter-btn" onclick="filterMembers('canada', this)">Canada</button>
+  <button class="filter-btn" onclick="filterMembers('autres', this)">Autres</button>
+</div>
+
+<!-- HONOUR COMMITTEE -->
+<section class="committee-section">
+  <div class="committee-header">
+    <h2 class="committee-title">Comité d'Honneur</h2>
+    <span class="committee-count">18 membres</span>
+  </div>
+  <div class="honour-grid">
+    <div class="honour-card">
+      <p class="honour-name">Hind Cherkaoui Dekkaki</p>
+      <p class="honour-role">Vice-Présidente Chargée de la Recherche Scientifique et de la Coopération</p>
+      <p class="honour-inst">Université Abdelmalek Essaâdi, Tétouan</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Mohamed Essaouri</p>
+      <p class="honour-role">Ex-Président, Coordinateur national des formations à l'Académie du Royaume du Maroc, Membre du Conseil Supérieur de l'Education</p>
+      <p class="honour-inst">Université Ibn Tofail, Kénitra</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Abdelouahed Mabrour</p>
+      <p class="honour-role">Membre</p>
+      <p class="honour-inst">Conseil Supérieur de l'Education, de la Formation et de la Recherche Scientifique</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Larbi Ait Hennani</p>
+      <p class="honour-role">Ex-Président chargé de la formation continue, Responsable du pôle Alternance et Professionnalisation</p>
+      <p class="honour-inst">Université Lille 2, IUT C de Roubaix</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Choukri Barbara</p>
+      <p class="honour-role">Secrétaire Général</p>
+      <p class="honour-inst">Université Abdelmalek Essaâdi, Tétouan</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Mellouki Abdellah</p>
+      <p class="honour-role">Directeur</p>
+      <p class="honour-inst">Institut Supérieur des Professions Infirmières et Techniques de Santé, Tétouan</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Abdelhamid Ibn El Farouk</p>
+      <p class="honour-role">Doyen, Faculté des lettres et des sciences humaines</p>
+      <p class="honour-inst">Université Hassan II, Casablanca</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Abdella Lamniâi</p>
+      <p class="honour-role">Directeur-adjoint chargé de la recherche scientifique et de la coopération</p>
+      <p class="honour-inst">ENS-Université Abdelmalek Essaâdi, Tétouan</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Mohamed Draoui</p>
+      <p class="honour-role">Directeur-adjoint chargé des affaires pédagogiques</p>
+      <p class="honour-inst">ENS-Université Abdelmalek Essaâdi, Tétouan</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Dan Van Raemdonck</p>
+      <p class="honour-role">Directeur du Centre d'Enseignement des Discours Universitaires et d'Études en Littéracie (CEDUEL)</p>
+      <p class="honour-inst">Université Libre de Bruxelles</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Marie-Christine Pollet</p>
+      <p class="honour-role">Professeure à la Faculté de Lettres, Traduction et Communication, Responsable du projet « Écriture Scientifique »</p>
+      <p class="honour-inst">Université Libre de Bruxelles</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Isabelle Delcambre</p>
+      <p class="honour-role">Professeure émérite</p>
+      <p class="honour-inst">Université de Lille, France</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Abdelkarim Zaid</p>
+      <p class="honour-role">Directeur du Centre interuniversitaire de recherche en éducation de Lille</p>
+      <p class="honour-inst">Université de Lille, France</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Abderrahman Tenkoul</p>
+      <p class="honour-role">Ex-Président, Professeur</p>
+      <p class="honour-inst">Université Ibn Tofail-Kénitra / Université Euro méditerranéen de Fès</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Kheira Kembouche</p>
+      <p class="honour-role">Professeure, FLSH Mohammedia</p>
+      <p class="honour-inst">Université Hassan II de Casablanca</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Mohamed Kembouche</p>
+      <p class="honour-role">Professeur</p>
+      <p class="honour-inst">Université Mohammed Premier d'Oujda</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Latifa Daâdaoui</p>
+      <p class="honour-role">Professeure</p>
+      <p class="honour-inst">Université Mohamed V</p>
+    </div>
+    <div class="honour-card">
+      <p class="honour-name">Youssef El Fihri</p>
+      <p class="honour-role">Directeur du laboratoire « Connaissances et valeurs »</p>
+      <p class="honour-inst">ENS-Université Abdelmalek Essaâdi, Tétouan</p>
+    </div>
+  </div>
+</section>
+
+<!-- SCIENTIFIC COMMITTEE -->
+<section class="scientific-section" id="scientific">
+  <div class="sci-header">
+    <p class="sci-eyebrow">Interface 03 · Comité Scientifique</p>
+    <h2 class="sci-title">Comité Scientifique</h2>
+  </div>
+  <div class="search-box-wrapper">
+    <input type="text" class="search-box" placeholder="Rechercher un membre..." id="memberSearch" oninput="searchMembers(this.value)">
+  </div>
+  <div class="sci-grid" id="sciGrid">
+
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Asmae Afnakar</p><p class="sci-affil">Université Moulay Smail, ENS-Meknès</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="bresil"><p class="sci-name">Juliana Alves Assis</p><p class="sci-affil">Paulista Pontifícia Universidade Católica de Minas Gerais, PUC Minas, Belo Horizonte</p><span class="sci-country">Brésil</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Imane Bakkali</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Christine Barré-De-Miniac</p><p class="sci-affil">Université de Lorraine</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Daniel Bart</p><p class="sci-affil">Université de Lille</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="suisse"><p class="sci-name">Chiara Bemporad</p><p class="sci-affil">Haute École Pédagogique du canton de Vaud</p><span class="sci-country">Suisse</span></div>
+    <div class="sci-card" data-country="autres"><p class="sci-name">Nabila Benhouhou</p><p class="sci-affil">École Normale Supérieure de Bouzaréah, Alger</p><span class="sci-country">Algérie</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Catherine Boyer</p><p class="sci-affil">Université de Lille</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="canada"><p class="sci-name">Priscilla Boyer</p><p class="sci-affil">Université du Québec à Trois-Rivières</p><span class="sci-country">Canada</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Elisabeth Calaque</p><p class="sci-affil">Université de Grenoble</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Cristelle Cavala</p><p class="sci-affil">Université Sorbonne Nouvelle-Paris</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Ana Dias Chiaruttini</p><p class="sci-affil">Université Côte d'Azur - INSPE de l'Académie de Nice</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Cora Cohen-Azria</p><p class="sci-affil">Université de Lille</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="bresil"><p class="sci-name">Manoel Luiz Gonçalves Corrêa</p><p class="sci-affil">Universidade de São Paulo (USP)</p><span class="sci-country">Brésil</span></div>
+    <div class="sci-card" data-country="bresil"><p class="sci-name">Vera Lúcia Lopes Cristóvão</p><p class="sci-affil">Universidade Estadual de Londrina (UEL)</p><span class="sci-country">Brésil</span></div>
+    <div class="sci-card" data-country="bresil"><p class="sci-name">Tamiris Vianna Da Silva</p><p class="sci-affil">Université de l'État de São Paulo, São José do Rio Preto</p><span class="sci-country">Brésil</span></div>
+    <div class="sci-card" data-country="suisse"><p class="sci-name">Carole-Anne Deschoux</p><p class="sci-affil">Haute École Pédagogique du canton de Vaud</p><span class="sci-country">Suisse</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Isabelle Delcambre</p><p class="sci-affil">Université de Lille</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Nathalie Denizot</p><p class="sci-affil">Sorbonne Université-INSPE de Paris</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="bresil"><p class="sci-name">Émerson de Pietri</p><p class="sci-affil">Faculdade de Educação da Universidade de São Paulo</p><span class="sci-country">Brésil</span></div>
+    <div class="sci-card" data-country="autres"><p class="sci-name">Christiane Donahue</p><p class="sci-affil">Dartmouth College</p><span class="sci-country">USA</span></div>
+    <div class="sci-card" data-country="canada"><p class="sci-name">Christian Dumais</p><p class="sci-affil">Université du Québec à Trois-Rivières</p><span class="sci-country">Canada</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Maha El Biadi</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Abdellatif El Farahi</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Imane El Hadi</p><p class="sci-affil">Université Ibn Tofail, ESEF-Kénitra</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Badr El Houdna</p><p class="sci-affil">Université Ibn Tofail, ESEF-Kénitra</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Nour Eddine Elhaiek</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Youssef El Houdna</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS / Université de Lille</p><span class="sci-country">Maroc · France</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Mohamed Erradi</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="suisse"><p class="sci-name">Luc Fiaz</p><p class="sci-affil">Haute École de Pédagogie VAUD</p><span class="sci-country">Suisse</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Stéphanie Fischer</p><p class="sci-affil">Université de Lille</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Cédric Fluckiger</p><p class="sci-affil">Université de Lille</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="bresil"><p class="sci-name">Claudine Franchon</p><p class="sci-affil">UnB - Universidade de Brasilia</p><span class="sci-country">Brésil</span></div>
+    <div class="sci-card" data-country="suisse"><p class="sci-name">Roxane Gagnon</p><p class="sci-affil">Haute École Pédagogique du canton de Vaud</p><span class="sci-country">Suisse</span></div>
+    <div class="sci-card" data-country="suisse"><p class="sci-name">Clerc Anne-Georgy</p><p class="sci-affil">Haute École Pédagogique du canton de Vaud</p><span class="sci-country">Suisse</span></div>
+    <div class="sci-card" data-country="belgique"><p class="sci-name">Carole Glorieux</p><p class="sci-affil">Université Libre de Bruxelles</p><span class="sci-country">Belgique</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Hannouni Mouna</p><p class="sci-affil">Institut Supérieur des Professions Infirmières et Techniques de Santé, Tétouan</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Rachid Janati</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Mohamed Haytoumi</p><p class="sci-affil">Université Abdelmalek Essaâdi</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Christophe Joigneaux</p><p class="sci-affil">Seine-Saint-Denis de l'INSPE de Créteil</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Layal Kanaan-Caillol</p><p class="sci-affil">Université d'Orléans</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Bernadette Kervyn</p><p class="sci-affil">Université de Bordeaux - INSPE Académie de Bordeaux</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Mohamed Khaldi</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Rabha Kissani</p><p class="sci-affil">Université Ibn Tofail, ESEF-Kénitra</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="bresil"><p class="sci-name">Fabiana Komesu</p><p class="sci-affil">Universidade Estadual Paulista (UNESP), São José do Rio Preto</p><span class="sci-country">Brésil</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Sefian Laâmarti</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="autres"><p class="sci-name">Mónica Tapia Ladino</p><p class="sci-affil">Universidad Católica de la Santísima Concepción</p><span class="sci-country">Chili</span></div>
+    <div class="sci-card" data-country="canada"><p class="sci-name">Stéphanie Lanctôt</p><p class="sci-affil">Faculté d'éducation de l'Université de Sherbrooke</p><span class="sci-country">Canada</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Elodie Lang</p><p class="sci-affil">Université Paul-Valéry Montpellier 3</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Marlène Lebrun</p><p class="sci-affil">Université de Montpellier</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Sabina Mahmud</p><p class="sci-affil">Université de Poitiers</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="autres"><p class="sci-name">Hana Merazka</p><p class="sci-affil">École Normale Supérieure de Constantine</p><span class="sci-country">Algérie</span></div>
+    <div class="sci-card" data-country="canada"><p class="sci-name">Geneviève Messier</p><p class="sci-affil">Université du Québec à Montréal</p><span class="sci-country">Canada</span></div>
+    <div class="sci-card" data-country="belgique"><p class="sci-name">Déborah Meunier</p><p class="sci-affil">Université de Liège</p><span class="sci-country">Belgique</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Nabil Morchif</p><p class="sci-affil">Université Ibn Tofail, ESEF-Kénitra</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Florence Mauraux</p><p class="sci-affil">INSPE Toulouse Occitanie-Pyrénées, Université Toulouse Jean Jaurès</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="autres"><p class="sci-name">Federico Navarro</p><p class="sci-affil">Universidad de Chile</p><span class="sci-country">Argentine</span></div>
+    <div class="sci-card" data-country="suisse"><p class="sci-name">Delphine Odier-Guedj</p><p class="sci-affil">Haute École Pédagogique du canton de Vaud</p><span class="sci-country">Suisse</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Maria Pagoni</p><p class="sci-affil">Université de Lille</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="suisse"><p class="sci-name">Elodie Paillard</p><p class="sci-affil">Haute École de Pédagogie VAUD</p><span class="sci-country">Suisse</span></div>
+    <div class="sci-card" data-country="belgique"><p class="sci-name">Marie-Christine Pollet</p><p class="sci-affil">Université Libre de Bruxelles</p><span class="sci-country">Belgique</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Bénédicte Pivot</p><p class="sci-affil">Université Paul-Valéry Montpellier 3</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Fanny Rinck</p><p class="sci-affil">Université Grenoble Alpes</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Abdelah Romli</p><p class="sci-affil">Université Ibn Tofail, FLSH-Kénitra</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Evelyne Rosen-Reinhardt</p><p class="sci-affil">Université de Lille</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Noussaiba Roussi</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="belgique"><p class="sci-name">Caroline Scheepers</p><p class="sci-affil">Université catholique de Louvain-Saint-Louis Bruxelles</p><span class="sci-country">Belgique</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Elisabeth Schneider</p><p class="sci-affil">Université de Caen Basse Normandie, INSPE de Normandie</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Xavier Sido</p><p class="sci-affil">Université de Lille</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Rachid Souidi</p><p class="sci-affil">Université Ibn Tofail, ESEF-Kénitra</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Najemeddin Soughati</p><p class="sci-affil">Université Ibn Tofail, Kénitra</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="belgique"><p class="sci-name">Morgane Tresnie</p><p class="sci-affil">Université Libre de Bruxelles</p><span class="sci-country">Belgique</span></div>
+    <div class="sci-card" data-country="france"><p class="sci-name">Abdelkarim Zaid</p><p class="sci-affil">Université de Lille - INSPE</p><span class="sci-country">France</span></div>
+    <div class="sci-card" data-country="maroc"><p class="sci-name">Rajae Zerhane</p><p class="sci-affil">Université Abdelmalek Essaâdi-ENS</p><span class="sci-country">Maroc</span></div>
+    <div class="sci-card" data-country="belgique"><p class="sci-name">Marie Wibrin</p><p class="sci-affil">Université Libre de Bruxelles</p><span class="sci-country">Belgique</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">AIR<span>L</span></div>
+  <ul class="footer-nav">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="qui-sommes-nous.html">À propos</a></li>
+    <li><a href="axes-recherche.html">Recherches</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 AIRL</p>
+</footer>
+
+<script>
+  function filterMembers(country, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.sci-card').forEach(card => {
+      if (country === 'all' || card.dataset.country === country) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  }
+
+  function searchMembers(val) {
+    const q = val.toLowerCase();
+    document.querySelectorAll('.sci-card').forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.classList.toggle('hidden', q && !text.includes(q));
+    });
+  }
+</script>
+</body>
+</html>
